@@ -3,8 +3,9 @@
 > Hub del proyecto NYTRIX — plataforma de trading P2P.
 
 ## Estado Actual
-- **Fase**: Workers Fase 5 completa, Phase A-D completas
-- **Pendiente**: Phase E (APK Worker Nativa), Phase F (Production Lockdown)
+- **Fase**: Workers Fase 5 completa, Phase A-D completas, NYTX Audit completa
+- **NYTX Score**: 73.5/100 (+11.5 vs baseline 62)
+- **Pendiente**: Phase E (APK Worker Nativa), Phase F (SSL, cron backups, dominio), N10 (métricas usuario)
 
 ## Stack
 | Capa | Tecnología |
@@ -47,6 +48,14 @@
 
 ## GitHub
 - Repo: `github.com/yizuz20062026/nytrix`
+
+## NYTX Audit (13 Jul 2026)
+- Score: 62 → 73.5/100 (+11.5)
+- SQL injection fix, Helmet+CSP, N+1 queries eliminados, WAL mode
+- CI pipeline (GitHub Actions), backup script, coverage thresholds
+- Auth audit logging, per-user rate limiting, health endpoint
+- Reportes: `nytx-report-nytrix-20260713-0528.md`
+- [[../../sessions/2026-07-13-nytx-audit|Handoff sesión]]
 
 ## Decisiones Relacionadas
 - [[../decisiones/seguridad-web\|Seguridad Web]]

@@ -1,0 +1,60 @@
+# Sesion 14 Julio 2026 - Fix Frontend + APK Package Filter + Bug Token
+
+## Contexto
+- ThinkCentre (miarch, 100.96.174.70), NYTRIX backend en puerto 3006, WS workers en 3008
+- Phone (sapphire/Redmi Note 13) en Tailscale 100.89.27.44
+- Desktop offline desde hace 11-13 dias
+
+## Lo que hicimos
+
+### 1. Fix re-render loop frontend (SocketContext)
+- **Problema**: `useSocket()` retornaba `{ socket: socketRef.current, subscribeToChat }` - objeto nuevo en cada render. SocketContext pasaba este objeto como context value -> todos los consumidores (Orders, Dashboard, Analytics, P2PChats) recibian referencia nueva en cada render -> efectos con `[socketCtx]` se re-ejecutaban infinitamente -> invalidaban queries -> loop.
+- **Fix**: Convertir socket de `useRef` a `useState`, memoizar retorno con `useMemo`.
+- **Archivo**: `frontend/src/hooks/useSocket.js`
+  - `useRef(null)` -> `useState(null)`
+  - `setSocket(newSocket)` en el effect
+  - `subscribeToChat` ahora usa `socket` del closure (en vez de `socketRef.current`), con `socket` en deps
+  - Retorno: `useMemo(() => ({ socket, subscribeToChat }), [socket, subscribeToChat])`
+  - `useRef` removido de imports
+- **Context**: SocketContext.jsx no requirio cambios - al recibir objeto estable de useSocket, el context value es estable.
+
+### 2. Polling optimizado
+- Orders.tsx: `refetchInterval` de 5s -> 30s (activo) / 120s (historial)
+- Dashboard.tsx: ya tenia 30-60s, OK
+
+### 3. tsconfig.json fix (TS 7.0.2)
+- `baseUrl` removido (eliminado en TypeScript 7+)
+- Paths actualizados: `"@/*": ["./src/*"]`, `"*": ["./*"]`
+
+### 4. APK: Filtro de paquetes no-bancarios
+- **Problema**: AccessibilityService procesaba eventos de TODAS las apps (TikTok, Instagram, etc.) causando interferencia/lag.
+- **Fix**: Cuando `isIdle=true`, descartar eventos de apps no listadas en `BANK_PACKAGES` al inicio de `onAccessibilityEvent`.
+- **Archivo**: `BankAccessibilityService.kt`
+  - `companion object` movido al inicio de la clase (estaba al final)
+  - Nuevo set `BANK_PACKAGES` con 20 packages (bancos venezolanos + redes sociales + Mercado Pago)
+  - Early return en `onAccessibilityEvent`: `if (isIdle && packageName !in BANK_PACKAGES && packageName != this.packageName) return`
+  - `isServiceRunning()` movido al companion object principal
+  - Import `Intent` removido (no usado)
+- **Build**: `gradle assembleDebug` exitoso (61MB), sirviendose en `http://100.96.174.70:8888/app-debug.apk`
+
+### 5. Bug: Token con prefijo "Token: " en WebSocket
+- **Problema**: Phone guardo el JWT con prefijo `Token: ` (ej: `Token: eyJ...` en vez de `eyJ...`). El servidor llamaba `jwt.verify("Token: eyJ...", secret)` que falla.
+- **Sintoma**: Backend logs mostraban conexiones entrantes desde `100.89.27.44` con `?token=Token:%20eyJ...`, pero el server cerraba conexion silenciosamente (try/catch). Phone entraba en loop de reconexion eterna.
+- **Fix**: Agregar `normalizeToken()` en `rawDeviceSocket.js` que limpia prefijos `Token:`, `Bearer:`, `token:`, `bearer:` al iniciar sesion.
+- **Archivo**: `backend/src/websocket/rawDeviceSocket.js`
+  - Nueva funcion `normalizeToken(raw)` aplicada tanto en `handleLogConnection` como `handleDeviceConnection`
+
+## Lo que NO funciono
+- `gradle wrapper` se rompio por wrapper JAR corrupto. Solucion: usar Gradle directamente desde SDKMAN (`gradle assembleDebug` en vez de `./gradlew`).
+- tsconfig.json con `baseUrl` causa error `TS5102` en TypeScript 7.0.2.
+
+## URLs activas
+- API: `http://100.96.174.70:3006`
+- WS Workers: `ws://100.96.174.70:3008` (raw WebSocket)
+- Frontend: `http://localhost:5173`
+- APK Download: `http://100.96.174.70:8888/app-debug.apk`
+
+## Pendiente
+1. Phone necesita reconectarse ahora que el backend tiene el fix (reintentara automaticamente con backoff)
+2. Probar APK nuevo con filtro de paquetes en el phone fisico
+3. Verificar que no hay interferencia con TikTok/Instagram
