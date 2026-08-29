@@ -42,6 +42,13 @@ Sesión intensiva de investigación + implementación sobre automatización banc
 - WorkerDashboardTab.tsx: usa DeviceCard para realtime devices
 - RealtimeDevice interface: agregado workerId y name
 
+## Metodología de Mapeo (vía ADB + scrcpy)
+- El mapeo del flujo bancario se hizo con el teléfono conectado a la PC por USB
+- **ADB + uiautomator dump**: extracción del árbol de nodos de UI para identificar selectores
+- **scrcpy**: Yizuz lo detectó en pantalla de la PC, control del dispositivo en vivo mientras se mapeaba
+- A partir de ese dump se construyeron los selectores `anyOfTexts` y `WaitForText` del BDVFlow
+- El APK worker luego ejecuta esos mismos selectores vía AccessibilityService (sin necesidad de ADB)
+
 ## Pendiente
 1. Probar stealth mode abriendo app bancaria (BDV)
 2. Probar `saldo bdv` — ver si abre BDV con stealth

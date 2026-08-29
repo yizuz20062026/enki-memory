@@ -83,3 +83,63 @@
 - **Fix**: `android:usesCleartextTraffic="true"` en `<application>` del AndroidManifest.xml
 - **Alternativa**: network_security_config.xml con `<cleartextTrafficPermitted>true</cleartextTrafficPermitted>` para más control
 - **Aplica a**: cualquier conexión HTTP/WS/WSS sin TLS en Android 9+
+
+---
+
+### [L1-008] Consumer USB boards cap at ~40 devices
+**Fecha**: 2026-07-17
+**Proyecto**: NYTRIX Phone Farm
+**Severidad**: alta
+**Estado**: active
+
+**Trigger**: Al configurar phone farm box con más de 40 dispositivos
+**Acción**: Consumer boards tienen firmware limit ~30-45 phones. Usar rear USB2 ports, powered hubs, BIOS: XHCI=Off, EHCI=On. Server-grade boards (X79+) escalan mejor. ≤3 tiers de hub depth. Phone farm boxes industriales con per-port power switching.
+**Verificación**: Todos los devices aparecen en `adb devices` de forma estable.
+
+---
+
+### [L1-009] Socket.IO global.emit() es O(n²) a escala
+**Fecha**: 2026-07-17
+**Proyecto**: NYTRIX Phone Farm
+**Severidad**: alta
+**Estado**: active
+
+**Trigger**: Cuando hay múltiples bots/clients conectados por Socket.IO
+**Acción**: `io.emit()` envía a TODOS los clientes. A 40 bots + frontend = cientos de mensajes irrelevantes por minuto. Usar rooms (`io.to('team_${id}').emit()`) para scoped broadcasting. Redis adapter para multi-server.
+**Verificación**: `socket.monitor` muestra tráfico reducido >80% post-migración.
+
+---
+
+### [L1-010] ppadb reemplaza subprocess ADB calls
+**Fecha**: 2026-07-17
+**Proyecto**: NYTRIX Phone Farm
+**Severidad**: alta
+**Estado**: active
+
+**Trigger**: Cuando se hacen múltiples llamadas ADB por bot
+**Acción**: `ppadb-reborn` (pip) usa TCP socket persistente al ADB server. Elimina fork+exec overhead. Latencia: 50-200ms → 5-20ms. RAM: 5MB/process → 1KB/socket. Instancia compartida via AdbClient().
+**Verificación**: `time python -c "from ppadb.client import Client; c=Client(); d=c.device('SERIAL'); d.shell('echo ok')"` <100ms.
+
+---
+
+### [L1-011] Tesseract 3x más rápido que EasyOCR en CPU
+**Fecha**: 2026-07-17
+**Proyecto**: NYTRIX Phone Farm
+**Severidad**: media
+**Estado**: active
+
+**Trigger**: Cuando se necesita OCR en múltiples procesos sin GPU
+**Acción**: Tesseract 5.5: ~0.82s/página, 10MB install, CPU only. EasyOCR: ~2.45s/página (CPU), 500MB install (PyTorch). Para screenshots de UI bancaria (texto limpio, fondo uniforme), Tesseract es suficiente y 3x más eficiente. Microservicio FastAPI compartido es ideal.
+**Verificación**: classify_screen() con Tesseract <1s por imagen.
+
+---
+
+### [L1-012] Thundering herd en auto-claim a escala
+**Fecha**: 2026-07-17
+**Proyecto**: NYTRIX Phone Farm
+**Severidad**: alta
+**Estado**: active
+
+**Trigger**: Cuando múltiples bots reciben el mismo evento y intentan claim simultáneamente
+**Acción**: 40 bots reciben `chat:new` → 40 HTTP POST claim → 39 fallan 409. Soluciones: (1) BullMQ queue con 1 claim job, (2) stagger delay random 0.5-3s antes de claim, (3) pre-check `claimedBy IS NULL` antes de POST. BullMQ es la solución definitiva.
+**Verificación**: <2 intentos fallidos por orden bajo carga de 40 bots.

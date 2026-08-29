@@ -42,9 +42,13 @@
 - `GET /api/employee/metrics` — métricas operador
 - `GET /api/admin/finance/trading-dashboard` — dashboard financiero
 
-## Credenciales (Dev)
-- App: yizuz@nytrix.io / Admin123!
-- Admin: admin@nytrix.io / Admin123!
+## Credenciales (Dev — verificadas 28 Ago 2026)
+- App: `yizuz@nytrix.io` / `Admin123!`
+- Admin Staff (panel): `admin@nytrix.io` / `admin123`  ← corregida (antes decía Admin123!)
+- Admin Staff (panel): `enki@nytrix.io` (password propia)
+
+> ⚠️ Las passwords se resetearon en DB el 28 Ago 2026 porque las originales no coincidían con las documentadas. Las 3 DBs fantasma vacías (db.sqlite3, src/database/nytrix.db, data/database.sqlite) se eliminaron. Única fuente: `backend/data/nytrix.db` vía `DATABASE_URL`.
+> Backup previo: `backend/data/nytrix.db.bak-20260828-163549`
 
 ## GitHub
 - Repo: `github.com/yizuz20062026/nytrix`
@@ -57,5 +61,12 @@
 - Reportes: `nytx-report-nytrix-20260713-0528.md`
 - [[../../sessions/2026-07-13-nytx-audit|Handoff sesión]]
 
+## Phone Farm Scale (17 Jul 2026)
+- [[./nytrix-phone-farm-scale|Plan de Escalabilidad 20-40 Bots]]
+- [[../../adr/004-phone-farm-scaling|ADR-004: Phone Farm Scaling]]
+- [[../../sessions/2026-07-17-phone-farm-scale-plan|Plan Completo Detallado]]
+- Investigación: [[../../raw/phone-farm-research|Hardware]], [[../../raw/socketio-scaling-research|Socket.IO]], [[../../raw/adb-pooling-research|ADB Pooling]], [[../../raw/ocr-optimization-research|OCR]]
+
 ## Decisiones Relacionadas
 - [[../decisiones/seguridad-web\|Seguridad Web]]
+- [[../../adr/004-phone-farm-scaling\|ADR-004: Phone Farm Scaling]]

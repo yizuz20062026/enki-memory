@@ -33,7 +33,16 @@
 - `raw/` es staging buffer — lo que ahí se sintetiza a `wiki/` después
 - Al cerrar sesión → actualizar `sessions/` con handoff
 
+## Consolidación (ciclo "vivo" del conocimiento)
+- **Patrón Karpathy LLM Wiki** → somos programadores del wiki, no solo archivadores.
+- **Ingest**: síntesis de `raw/` → `wiki/` (entidades/conceptos conectados).
+- **Query**: respuestas valiosas se archivan como nuevas páginas wiki.
+- **Lint**: detectar duplicados, contradicciones, links rotos (`_tools/lint.sh`).
+- Consultar **lessons/ + LESSONS.md** ANTES de re-debuggear un error → no repetir.
+- **Ruta completa de mejora**: [[wiki/proyectos/roadmap-obsidian-ia|Roadmap Obsidian + IA]].
+
 ## Fuente de Verdad
 - **Repo del proyecto** → verdad sobre código y estado actual
 - **Este vault** → verdad sobre decisiones, contexto, conocimiento acumulado
 - Si hay conflicto entre vault y repo → **el repo gana**
+- Si hay conflicto entre memory blocks y vault → **el vault gana** (evitar duplicados)
