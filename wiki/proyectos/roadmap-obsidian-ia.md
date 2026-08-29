@@ -2,7 +2,14 @@
 
 > **Fuente de verdad**: este documento. Define la ruta completa para actualizar el vault y potenciar el conocimiento del estudio. Cada fase tiene `DONE when` verificable. NO pasar a la siguiente sin cumplir.
 > **Estrategia padre**: [[estrategia-conocimiento-obsidian]]
-> **Fecha**: 29 Ago 2026 · **Estado**: En planificación
+> **Fecha**: 29 Ago 2026 · **Estado**: En progreso
+
+## ✅ Progreso (29 Ago 2026)
+- **FASE 0** Parcial (falta: dedup entre memory blocks y vault, esquema de tags formal)
+- **FASE 1** ✅ Plugins instalados (Dataview, Templater, QuickAdd, Linter, Omnisearch) — ver [[2026-08-29-roadmap-obsidian-implementacion]]
+- **FASE 2** Plantillas creadas (6) — falta configurar Templater/QuickAdd en Obsidian
+- **FASE 3-7** Pendiente
+- **Nota**: `.obsidian` NO se versiona (gitignore), folder de plugins es local.
 
 ---
 
