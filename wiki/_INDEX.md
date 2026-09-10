@@ -26,6 +26,7 @@
 - [[seguridad-web]] — Framework de seguridad
 - [[memoria-obsidian]] — Sistema de memoria del agente
 - [[estrategia-conocimiento-obsidian]] — Estrategia de conocimiento Obsidian + IA (29 Ago 2026)
+- [[../adr/ADR-005-vault-multiagente|ADR-005]] — Vault compartido multi-agente Enki + Claude Code (10 Sep 2026)
 
 ### Conocimiento Técnico
 - [[nextjs16]] — Next.js 16, Turbopack, proxy.ts
