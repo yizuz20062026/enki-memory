@@ -6,6 +6,7 @@ tipo: adr
 tags: 
   - adr
 status: propuesto
+agente: <% tp.system.suggester(["enki", "claude-code", "enki+claude-code"], ["enki", "claude-code", "enki+claude-code"]) %>
 created: <% tp.date.now("YYYY-MM-DD HH:mm") %>
 updated: <% tp.date.now("YYYY-MM-DD HH:mm") %>
 ---
@@ -14,7 +15,7 @@ updated: <% tp.date.now("YYYY-MM-DD HH:mm") %>
 
 - **Estado**: Propuesto / Aceptado / Deprecado
 - **Fecha**: <% tp.date.now("YYYY-MM-DD") %>
-- **Decisores**: Yizuz, Enki
+- **Decisores**: Yizuz, Enki / Claude Code
 
 ## Contexto y problema
 - 

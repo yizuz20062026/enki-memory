@@ -6,7 +6,8 @@ tags:
   - proyecto
 status: activo
 prioridad: media
-created: <% tp.date.now("YYYY-MM-DD HH:mm") %}
+agente: <% tp.system.suggester(["enki", "claude-code", "enki+claude-code"], ["enki", "claude-code", "enki+claude-code"]) %>
+created: <% tp.date.now("YYYY-MM-DD HH:mm") %>
 updated: <% tp.date.now("YYYY-MM-DD HH:mm") %>
 ---
 

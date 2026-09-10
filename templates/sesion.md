@@ -3,6 +3,7 @@ carpeta: sessions
 fecha: <% tp.date.now("YYYY-MM-DD") %>
 proyecto: 
 tipo: sesion
+agente: <% tp.system.suggester(["enki", "claude-code", "enki+claude-code"], ["enki", "claude-code", "enki+claude-code"]) %>
 tags: 
   - sesion
 status: en_progreso
