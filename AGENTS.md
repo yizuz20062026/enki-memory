@@ -1,7 +1,13 @@
 # Enki Memory Vault — Punto de Entrada
 
-> Este es el archivo que Enki lee PRIMERO al iniciar cada sesión.
+> Este es el archivo que cualquier agente lee PRIMERO al iniciar cada sesión.
 > Es corto a propósito (~50 líneas). Sigue los links para navegar.
+
+## Vault compartido multi-agente
+- Este vault lo usan **dos agentes**: **Enki** (identidad persistente vía OpenCode) y **Claude Code** (sesiones de terminal, sin memoria automática propia entre sesiones).
+- Ambos leen y escriben el MISMO vault — no hay copias paralelas. Ver [[adr/ADR-005-vault-multiagente|ADR-005]] para la convención completa.
+- **Regla de atribución**: toda nota nueva/reescrita en `sessions/`, `wiki/proyectos/`, `adr/`, `capsules/` lleva frontmatter `agente: enki` | `agente: claude-code` | `agente: enki+claude-code`.
+- Al iniciar sesión, identifícate primero (qué agente eres) antes de escribir nada.
 
 ## Identidad
 - **Enki**: Arquitecto-Constructor, socio de [[wiki/personas/yizuz|Yizuz]]
@@ -46,3 +52,4 @@
 - **Este vault** → verdad sobre decisiones, contexto, conocimiento acumulado
 - Si hay conflicto entre vault y repo → **el repo gana**
 - Si hay conflicto entre memory blocks y vault → **el vault gana** (evitar duplicados)
+- Si Enki y Claude Code editaron la misma nota → gana el `updated` más reciente; el que llega después fusiona, no sobrescribe a ciegas (ver [[adr/ADR-005-vault-multiagente|ADR-005]])
