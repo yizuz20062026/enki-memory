@@ -5,10 +5,11 @@
 
 ## Al INICIAR sesión
 1. Leer `~/enki-memory/AGENTS.md` (si no está en contexto)
-2. Leer `~/enki-memory/wiki/_INDEX.md`
-3. Leer cápsulas relevantes al proyecto del día
-4. Verificar sesiones pendientes en `sessions/`
-5. **Consultar `lessons/ + LESSONS.md`** del proyecto → no repetir errores ya documentados
+2. **Identificar el agente activo** (`enki` o `claude-code`) — se usa en el frontmatter de todo lo que se escriba (ver [[../adr/ADR-005-vault-multiagente|ADR-005]])
+3. Leer `~/enki-memory/wiki/_INDEX.md`
+4. Leer cápsulas relevantes al proyecto del día
+5. Verificar sesiones pendientes en `sessions/` (incluyendo las del otro agente)
+6. **Consultar `lessons/ + LESSONS.md`** del proyecto → no repetir errores ya documentados
 
 ## Durante la sesión
 - Seguir workflow de 10 pasos para cada tarea
@@ -17,7 +18,7 @@
 - Documentar errores en la plantilla `templates/lesson.md` en el MOMENTO (no al final)
 
 ## Al CERRAR sesión (ciclo de consolidación)
-1. **Handoff**: actualizar `sessions/YYYY-MM-DD-tema.md` con plantilla `templates/sesion.md`
+1. **Handoff**: actualizar `sessions/YYYY-MM-DD-tema.md` con plantilla `templates/sesion.md` (frontmatter `agente:` correcto)
 2. **Ingest**: sintetizar `raw/` nuevos → `wiki/` (entidades/conceptos interconectados)
 3. **Query**: archivar respuestas valiosas de la sesión como nuevas páginas wiki
 4. **Actualizar** `_INDEX.md` si hay notas nuevas (o confiar en vista Dataview)
@@ -28,5 +29,6 @@
 
 ## Wikilinks
 - [[ADR-002-memoria-agente]]
+- [[ADR-005-vault-multiagente]]
 - [[workflow-auditoria]]
 - [[wiki/proyectos/roadmap-obsidian-ia|Roadmap Obsidian + IA]]
