@@ -38,6 +38,8 @@
 - No duplicados — si existe una nota relacionada, actualizar esa
 - `raw/` es staging buffer — lo que ahí se sintetiza a `wiki/` después
 - Al cerrar sesión → actualizar `sessions/` con handoff
+- **Salvaguarda en archivos estructurales**: `AGENTS.md`, `adr/`, `templates/`, `workflows/` definen CÓMO opera el sistema — no se editan a la ligera; si un cambio ahí no es obvio o es parte de lo que Yizuz pidió explícitamente, confirmar antes. `wiki/proyectos/`, `sessions/`, `capsules/` (contenido de trabajo normal) se editan libremente como parte del flujo de consolidación — todo está versionado con Git, así que es reversible.
+- **Señalar, no resolver en silencio**: si se detecta una contradicción entre dos notas (vault-vault) o entre vault y memory blocks, se reporta explícitamente (en la sesión o como hallazgo) y se deja que Yizuz decida — nunca fusionar o descartar una versión sin decirlo.
 
 ## Consolidación (ciclo "vivo" del conocimiento)
 - **Patrón Karpathy LLM Wiki** → somos programadores del wiki, no solo archivadores.
